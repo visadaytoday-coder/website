@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day To Day Voyage | معرض الكانتون 2026</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Cairo (Modern Arabic Font) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons (Phosphor Icons) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#1a365d',  /* Deep Blue from Logo */
+                            lightBlue: '#2c5282',
+                            orange: '#ed8936', /* Orange from Logo */
+                            gold: '#ecc94b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "linear-gradient(to right bottom, rgba(26, 54, 93, 0.9), rgba(44, 82, 130, 0.8)), url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=2994&auto=format&fit=crop')",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ed8936; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #dd6b20; }
+
+        /* Contract Viewer Security */
+        .contract-viewer {
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        /* Timeline Animations */
+    .timeline-item {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .timeline-item.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* The vertical line animation */
+    .timeline-line-container {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 2px;
+        background: #e2e8f0; /* Color of the empty line */
+        z-index: 0;
+    }
+    
+    .timeline-progress {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 2px;
+        background: #ed8936; /* Brand Orange */
+        height: 0%;
+        transition: height 1s linear;
+        z-index: 1;
+    }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
+
+    <!-- Navigation (Glassmorphism) -->
+    <nav class="fixed w-full z-50 top-0 start-0 border-b border-white/10 bg-brand-blue/90 backdrop-blur-md transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between p-4">
+            <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <!-- LOGO PLACEHOLDER: Replace src with your logo file -->
+          <!-- NEW CODE (PASTE THIS) -->
+            <div class="bg-white rounded-full p-1 w-14 h-14 flex items-center justify-center shadow-lg overflow-hidden">
+                <img src="logo.jpg" alt="Logo" class="w-full h-full object-contain">
+            </div>
+                <span class="self-center text-xl font-bold whitespace-nowrap text-white tracking-wide">Day To Day Voyage</span>
+            </a>
+            <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <a href="#booking" class="text-brand-blue bg-white hover:bg-brand-orange hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-full text-sm px-6 py-2.5 text-center transition-all duration-300 shadow-lg hover:shadow-orange-500/50">
+                    احجز الآن
+                </a>
+            </div>
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+                <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
+                    <li><a href="#program" class="block py-2 px-3 text-white/80 hover:text-brand-orange transition">البرنامج</a></li>
+                    <li><a href="#pricing" class="block py-2 px-3 text-white/80 hover:text-brand-orange transition">الأسعار</a></li>
+                    <li><a href="#contract" class="block py-2 px-3 text-white/80 hover:text-brand-orange transition">العقد</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center bg-hero-pattern bg-cover bg-center bg-fixed bg-no-repeat pt-20">
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-50 to-transparent z-10"></div>
+        
+        <div class="relative z-20 container mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm text-brand-gold font-semibold mb-6 animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                التسجيلات مفتوحة الآن
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-black text-white mb-6 leading-tight drop-shadow-xl">
+                اكتشف مستقبل تجارتك في <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-brand-gold">الصين 2026</span>
+            </h1>
+            
+            <p class="text-xl text-slate-200 mb-10 max-w-2xl mx-auto font-light">
+                رحلة شاملة (سياحة + أعمال) إلى معرض الكانتون. دورات تكوينية، تأشيرة مضمونة، وإقامة فاخرة.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#booking" class="group relative px-8 py-4 bg-brand-orange rounded-full font-bold text-white shadow-xl hover:shadow-2xl hover:bg-orange-600 transition-all duration-300 hover:-translate-y-1">
+                    <span class="flex items-center gap-2">
+                        احجز مقعدك
+                        <i class="ph ph-arrow-left group-hover:-translate-x-1 transition"></i>
+                    </span>
+                </a>
+                <a href="#video-section" class="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 rounded-full font-bold text-white hover:bg-white hover:text-brand-blue transition-all duration-300">
+                    شاهد فيديو الشرح
+                </a>
+            </div>
+
+            <!-- Stats/Countdown -->
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
+                    <div class="text-brand-gold font-bold text-2xl">12</div>
+                    <div class="text-slate-300 text-sm">يوم في الصين</div>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
+                    <div class="text-brand-gold font-bold text-2xl">+5</div>
+                    <div class="text-slate-300 text-sm">قطاعات تجارية</div>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
+                    <div class="text-brand-gold font-bold text-2xl">100%</div>
+                    <div class="text-slate-300 text-sm">مرافقة وإرشاد</div>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
+                    <div class="text-brand-gold font-bold text-2xl">50K</div>
+                    <div class="text-slate-300 text-sm">تخفيض الحجز المبكر</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us (Bento Grid) -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-brand-blue text-4xl font-bold mb-4">لماذا هذه الرحلة؟</h2>
+                <div class="w-24 h-1 bg-brand-orange mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6 h-auto md:h-[600px]">
+                <!-- Card 1: Large -->
+                <div class="md:col-span-2 md:row-span-2 bg-white rounded-[2rem] shadow-xl p-8 border border-slate-100 flex flex-col justify-between overflow-hidden relative group hover:shadow-2xl transition duration-500">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand-blue/5 rounded-full -mr-16 -mt-16 z-0"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-brand-blue text-white rounded-2xl flex items-center justify-center text-3xl mb-6">
+                            <i class="ph ph-graduation-cap"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-brand-blue mb-4">أكثر من مجرد سياحة</h3>
+                        <p class="text-slate-600 text-lg leading-relaxed mb-6">
+                            نحن لا نأخذك للصين فقط، بل نعلمك كيف تستورد. البرنامج يشمل دورات تكوينية تطبيقية في:
+                            <ul class="list-disc list-inside mt-4 space-y-2 text-slate-500">
+                                <li>أساسيات الاستيراد والشحن الجمركي.</li>
+                                <li>التكنولوجيا: تطبيقات الترجمة، الدفع (AliPay)، والبحث عن المصانع.</li>
+                                <li>كيفية التفاوض مع الموردين الصينيين.</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop" class="absolute bottom-0 left-0 w-full h-48 object-cover opacity-20 group-hover:scale-105 transition duration-700" alt="Training">
+                </div>
+
+                <!-- Card 2: Visa -->
+                <div class="bg-brand-blue text-white rounded-[2rem] shadow-xl p-8 flex flex-col justify-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-brand-orange opacity-0 group-hover:opacity-10 transition duration-500"></div>
+                    <i class="ph ph-passport text-5xl mb-4 text-brand-gold"></i>
+                    <h3 class="text-2xl font-bold mb-2">تأشيرة مضمونة</h3>
+                    <p class="text-blue-100">نتكفل بملف الفيزا 100% مع ضمان نسبة قبول عالية.</p>
+                </div>
+
+                <!-- Card 3: Support -->
+                <div class="bg-white rounded-[2rem] shadow-xl p-8 border border-slate-100 flex flex-col justify-center relative group">
+                    <i class="ph ph-translate text-5xl mb-4 text-brand-orange"></i>
+                    <h3 class="text-2xl font-bold text-brand-blue mb-2">مرافقة و ترجمة</h3>
+                    <p class="text-slate-600">مرشدون سياحيون ومترجمون معك في المعرض والفندق.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- Itinerary Timeline Section -->
+    <section id="schedule" class="py-24 bg-slate-50 relative">
+        <div class="container mx-auto px-6 max-w-5xl">
+            
+            <!-- Header -->
+            <div class="text-center mb-16">
+                <span class="text-brand-orange font-bold tracking-wider uppercase text-sm">برنامج الرحلة</span>
+                <h2 class="text-4xl font-bold text-brand-blue mt-2 mb-4">جدول الرحلة التفصيلي</h2>
+                <div class="w-24 h-1 bg-brand-orange mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Timeline Container -->
+            <div class="relative border-r-2 border-brand-blue/20 mr-4 md:mr-0 space-y-12">
+
+                <!-- Day 1: Departure -->
+                <div class="relative pr-8 md:pr-12">
+                    <div class="absolute -right-[9px] top-0 w-5 h-5 rounded-full bg-brand-orange border-4 border-slate-50"></div>
+                    <div class="flex flex-col md:flex-row gap-6 items-start">
+                        <!-- Date Badge -->
+                        <div class="flex-shrink-0 bg-brand-blue text-white p-4 rounded-2xl text-center min-w-[100px] shadow-lg">
+                            <span class="block text-2xl font-bold font-nums">10</span>
+                            <span class="text-xs opacity-80">أفريل</span>
+                        </div>
+                        <!-- Content -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex-1 hover:shadow-md transition">
+                            <h3 class="text-xl font-bold text-brand-blue mb-2">الانطلاق من الجزائر</h3>
+                            <ul class="space-y-2 text-slate-600">
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-clock text-brand-orange"></i> التواجد في مطار هواري بومدين (10:30 صباحاً)</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-airplane-takeoff text-brand-orange"></i> إقلاع الطائرة (15:45 مساءً)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 2: Arrival -->
+                <div class="relative pr-8 md:pr-12">
+                    <div class="absolute -right-[9px] top-0 w-5 h-5 rounded-full bg-brand-blue border-4 border-slate-50"></div>
+                    <div class="flex flex-col md:flex-row gap-6 items-start">
+                        <div class="flex-shrink-0 bg-white border border-brand-blue text-brand-blue p-4 rounded-2xl text-center min-w-[100px]">
+                            <span class="block text-2xl font-bold font-nums">11</span>
+                            <span class="text-xs font-bold">أفريل</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex-1 hover:shadow-md transition">
+                            <h3 class="text-xl font-bold text-brand-blue mb-2">الوصول إلى الصين</h3>
+                            <p class="text-sm text-slate-500 mb-3">دبي (ترانزيت) ➔ شنزن ➔ قوانزو</p>
+                            <ul class="space-y-2 text-slate-600">
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-airplane-landing"></i> الوصول إلى دبي (01:05 صباحاً) - راحة بالفندق</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-airplane-takeoff"></i> الإقلاع نحو شنزن (10:45 صباحاً)</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-bus"></i> الوصول 22:00 والتنقل بالحافلة إلى الفندق</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 3: Orientation -->
+                <div class="relative pr-8 md:pr-12">
+                    <div class="absolute -right-[9px] top-0 w-5 h-5 rounded-full bg-brand-blue border-4 border-slate-50"></div>
+                    <div class="flex flex-col md:flex-row gap-6 items-start">
+                        <div class="flex-shrink-0 bg-white border border-brand-blue text-brand-blue p-4 rounded-2xl text-center min-w-[100px]">
+                            <span class="block text-2xl font-bold font-nums">12</span>
+                            <span class="text-xs font-bold">أفريل</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex-1 hover:shadow-md transition">
+                            <h3 class="text-xl font-bold text-brand-blue mb-2">تجهيزات وجولة بحرية</h3>
+                            <ul class="space-y-2 text-slate-600">
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-sim-card text-green-600"></i> استلام الشرائح + تفعيل VPN + صرف العملة</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-boat text-blue-500"></i> جولة بالباخرة ومطاعم عربية</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 4: Tourism -->
+                <div class="relative pr-8 md:pr-12">
+                    <div class="absolute -right-[9px] top-0 w-5 h-5 rounded-full bg-brand-blue border-4 border-slate-50"></div>
+                    <div class="flex flex-col md:flex-row gap-6 items-start">
+                        <div class="flex-shrink-0 bg-white border border-brand-blue text-brand-blue p-4 rounded-2xl text-center min-w-[100px]">
+                            <span class="block text-2xl font-bold font-nums">13</span>
+                            <span class="text-xs font-bold">أفريل</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex-1 hover:shadow-md transition">
+                            <h3 class="text-xl font-bold text-brand-blue mb-2">سياحة في قوانزو</h3>
+                            <p class="text-slate-600">جولة سياحية ليوم كامل لاستكشاف معالم مدينة قوانزو الساحرة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 5: Free Day -->
+                <div class="relative pr-8 md:pr-12">
+                    <div class="absolute -right-[9px] top-0 w-5 h-5 rounded-full bg-brand-blue border-4 border-slate-50"></div>
+                    <div class="flex flex-col md:flex-row gap-6 items-start">
+                        <div class="flex-shrink-0 bg-white border border-brand-blue text-brand-blue p-4 rounded-2xl text-center min-w-[100px]">
+                            <span class="block text-2xl font-bold font-nums">14</span>
+                            <span class="text-xs font-bold">أفريل</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex-1 hover:shadow-md transition">
+                            <h3 class="text-xl font-bold text-brand-blue mb-2">يوم حر (أعمال)</h3>
+                            <p class="text-slate-600">زيارة الأسواق المختلفة، لقاء الموردين، أو زيارة مكاتب الشحن.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- THE EXPO BLOCK (Days 15-19) -->
+                <div class="relative pr-8 md:pr-12">
+                    <div class="absolute -right-[9px] top-0 w-5 h-5 rounded-full bg-brand-gold border-4 border-slate-50 animate-pulse"></div>
+                    <div class="flex flex-col md:flex-row gap-6 items-start">
+                        <!-- Special Gold Badge -->
+                        <div class="flex-shrink-0 bg-gradient-to-br from-brand-orange to-brand-gold text-white p-4 rounded-2xl text-center min-w-[100px] shadow-lg shadow-orange-200">
+                            <span class="block text-sm font-bold mb-1">من</span>
+                            <span class="block text-2xl font-bold font-nums">15</span>
+                            <span class="block text-sm font-bold mt-1">إلى 19</span>
+                        </div>
+                        <!-- Content -->
+                        <div class="bg-white p-8 rounded-2xl shadow-lg border-r-4 border-brand-orange flex-1 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-32 h-32 bg-brand-orange/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+                            
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-brand-blue mb-2">معرض الكانتون (Canton Fair)</h3>
+                                    <p class="text-slate-500 font-medium mb-4">الحدث التجاري الأهم في العالم</p>
+                                </div>
+                                <div class="hidden sm:block bg-orange-100 text-brand-orange p-2 rounded-lg">
+                                    <i class="ph-fill ph-id-card text-3xl"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                                    <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">صباحاً</span>
+                                    <span class="text-slate-700 font-bold">زيارة المعرض والبحث عن الفرص</span>
+                                </div>
+                                <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                                    <span class="bg-slate-200 text-slate-600 text-xs px-2 py-1 rounded">مساءً</span>
+                                    <span class="text-slate-700">وقت حر (راحة أو جولات تسوق)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 20: Packing -->
+                <div class="relative pr-8 md:pr-12">
+                    <div class="absolute -right-[9px] top-0 w-5 h-5 rounded-full bg-brand-blue border-4 border-slate-50"></div>
+                    <div class="flex flex-col md:flex-row gap-6 items-start">
+                        <div class="flex-shrink-0 bg-white border border-brand-blue text-brand-blue p-4 rounded-2xl text-center min-w-[100px]">
+                            <span class="block text-2xl font-bold font-nums">20</span>
+                            <span class="text-xs font-bold">أفريل</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex-1 hover:shadow-md transition">
+                            <h3 class="text-xl font-bold text-brand-blue mb-2">تجهيز المغادرة</h3>
+                            <p class="text-slate-600">زيارة أخيرة للأسواق، شراء الهدايا، وتجهيز الأمتعة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Day 21-22: Return -->
+                 <div class="relative pr-8 md:pr-12">
+                    <div class="absolute -right-[9px] top-0 w-5 h-5 rounded-full bg-green-500 border-4 border-slate-50"></div>
+                    <div class="flex flex-col md:flex-row gap-6 items-start">
+                        <div class="flex-shrink-0 bg-slate-900 text-white p-4 rounded-2xl text-center min-w-[100px]">
+                            <span class="block text-xl font-bold font-nums">21-22</span>
+                            <span class="text-xs opacity-70">أفريل</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex-1 hover:shadow-md transition">
+                            <h3 class="text-xl font-bold text-brand-blue mb-2">رحلة العودة</h3>
+                            <ul class="space-y-2 text-slate-600">
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-clock"></i> التواجد في المطار (21 أفريل - 20:00 مساءً)</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-airplane-takeoff"></i> الإقلاع من دبي (22 أفريل - 08:45)</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-house-line text-green-600"></i> الوصول إلى الجزائر (12:55 مساءً)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- Pricing (Modern Cards) -->
+    <section id="pricing" class="py-20 bg-slate-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-brand-blue text-4xl font-bold text-center mb-16">اختر باقتك</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8 items-center">
+                
+                <!-- Plan 1 -->
+                <div class="bg-white rounded-3xl p-8 shadow-lg hover:-translate-y-2 transition duration-300 border border-slate-200">
+                    <span class="text-sm font-bold text-slate-400 uppercase tracking-wider">الاقتصادية</span>
+                    <h3 class="text-2xl font-bold text-brand-blue mt-2">فندق 3 نجوم</h3>
+                    <div class="my-6">
+                        <span class="text-4xl font-bold text-slate-800">390.000</span>
+                        <span class="text-slate-500">دج</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-slate-600">
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-green-500"></i> موقع سياحي تجاري</li>
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-green-500"></i> غرفة ثنائية</li>
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-green-500"></i> فيزا + طيران</li>
+                    </ul>
+                    <a href="#booking" onclick="selectHotel('3_stars')" class="block w-full py-3 border-2 border-brand-blue text-brand-blue font-bold text-center rounded-xl hover:bg-brand-blue hover:text-white transition">اختيار</a>
+                </div>
+
+                <!-- Plan 2 (Featured) -->
+                <div class="bg-white rounded-3xl p-8 shadow-2xl scale-110 z-10 border-2 border-brand-orange relative">
+                    <div class="absolute top-0 right-0 bg-brand-orange text-white text-xs font-bold px-4 py-2 rounded-bl-2xl rounded-tr-2xl">الأكثر مبيعاً</div>
+                    <span class="text-sm font-bold text-brand-orange uppercase tracking-wider">المميزة</span>
+                    <h3 class="text-3xl font-bold text-brand-blue mt-2">فندق 4 نجوم</h3>
+                    <div class="my-6">
+                        <span class="text-5xl font-bold text-brand-blue">480.000</span>
+                        <span class="text-slate-500">دج</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-6">السعر للغرفة الثنائية</p>
+                    <ul class="space-y-4 mb-8 text-slate-700 font-medium">
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-star text-yellow-400"></i> فندق فخم ومريح</li>
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-coffee text-brand-orange"></i> شامل فطور الصباح</li>
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-green-500"></i> تذكرة المعرض مجاناً</li>
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-green-500"></i> جميع الدورات التكوينية</li>
+                    </ul>
+                    <a href="#booking" onclick="selectHotel('4_stars')" class="block w-full py-4 bg-gradient-to-r from-brand-orange to-red-500 text-white font-bold text-center rounded-xl shadow-lg hover:shadow-orange-500/40 transition">احجز الآن</a>
+                </div>
+
+                <!-- Plan 3 -->
+                <div class="bg-white rounded-3xl p-8 shadow-lg hover:-translate-y-2 transition duration-300 border border-slate-200">
+                    <span class="text-sm font-bold text-slate-400 uppercase tracking-wider">الرفاهية</span>
+                    <h3 class="text-2xl font-bold text-brand-blue mt-2">فندق 5 نجوم</h3>
+                    <div class="my-6">
+                        <span class="text-4xl font-bold text-slate-800">550.000</span>
+                        <span class="text-slate-500">دج</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-slate-600">
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-green-500"></i> رفاهية مطلقة</li>
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-coffee text-brand-orange"></i> فطور صباح متنوع</li>
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-green-500"></i> غرفة ثنائية</li>
+                    </ul>
+                    <a href="#booking" onclick="selectHotel('5_stars')" class="block w-full py-3 border-2 border-brand-blue text-brand-blue font-bold text-center rounded-xl hover:bg-brand-blue hover:text-white transition">اختيار</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+<!-- Videos (Grid) -->
+   <!-- Modern Video Section -->
+    <section id="video-section" class="py-24 bg-brand-blue relative overflow-hidden">
+        <!-- Background Decor (Subtle Glows) -->
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/5 border border-white/10 text-brand-orange text-sm font-bold mb-4 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    شاهد التفاصيل
+                </div>
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">
+                    شروحات الرحلة <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-brand-gold">بالفيديو</span>
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-brand-orange to-transparent mx-auto rounded-full"></div>
+            </div>
+            
+            <!-- Video Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <div class="group relative bg-slate-900/50 border border-white/10 rounded-3xl overflow-hidden hover:border-brand-orange/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(237,137,54,0.15)] hover:-translate-y-2">
+                    <div class="relative aspect-video bg-black">
+                        <video controls class="w-full h-full object-cover rounded-t-3xl">
+                            <source src="video1.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="p-5 flex items-start gap-4">
+                        <span class="flex-shrink-0 w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-orange font-bold text-xl group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">01</span>
+                        <div>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand-orange transition-colors duration-300">البرنامج يشمل</h3>
+                            <p class="text-sm text-slate-400 mt-1">نظرة عامة على كل ما تتضمنه الرحلة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group relative bg-slate-900/50 border border-white/10 rounded-3xl overflow-hidden hover:border-brand-orange/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(237,137,54,0.15)] hover:-translate-y-2">
+                    <div class="relative aspect-video bg-black">
+                        <video controls class="w-full h-full object-cover rounded-t-3xl">
+                            <source src="video2.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="p-5 flex items-start gap-4">
+                        <span class="flex-shrink-0 w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-orange font-bold text-xl group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">02</span>
+                        <div>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand-orange transition-colors duration-300">الفندق والإقامة</h3>
+                            <p class="text-sm text-slate-400 mt-1">جولة داخل الفندق والغرف الفاخرة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group relative bg-slate-900/50 border border-white/10 rounded-3xl overflow-hidden hover:border-brand-orange/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(237,137,54,0.15)] hover:-translate-y-2">
+                    <div class="relative aspect-video bg-black">
+                        <video controls class="w-full h-full object-cover rounded-t-3xl">
+                            <source src="video3.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="p-5 flex items-start gap-4">
+                        <span class="flex-shrink-0 w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-orange font-bold text-xl group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">03</span>
+                        <div>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand-orange transition-colors duration-300">ملف التأشيرة</h3>
+                            <p class="text-sm text-slate-400 mt-1">الوثائق المطلوبة لضمان الفيزا.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="group relative bg-slate-900/50 border border-white/10 rounded-3xl overflow-hidden hover:border-brand-orange/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(237,137,54,0.15)] hover:-translate-y-2">
+                    <div class="relative aspect-video bg-black">
+                        <video controls class="w-full h-full object-cover rounded-t-3xl">
+                            <source src="video4.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="p-5 flex items-start gap-4">
+                        <span class="flex-shrink-0 w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-orange font-bold text-xl group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">04</span>
+                        <div>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand-orange transition-colors duration-300">جدول الأنشطة</h3>
+                            <p class="text-sm text-slate-400 mt-1">كيف سنقضي الأيام بالتفصيل.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="group relative bg-slate-900/50 border border-white/10 rounded-3xl overflow-hidden hover:border-brand-orange/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(237,137,54,0.15)] hover:-translate-y-2">
+                    <div class="relative aspect-video bg-black">
+                        <video controls class="w-full h-full object-cover rounded-t-3xl">
+                            <source src="video5.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="p-5 flex items-start gap-4">
+                        <span class="flex-shrink-0 w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-orange font-bold text-xl group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">05</span>
+                        <div>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand-orange transition-colors duration-300">الدورة التكوينية</h3>
+                            <p class="text-sm text-slate-400 mt-1">محاور التدريب في الاستيراد.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="group relative bg-slate-900/50 border border-white/10 rounded-3xl overflow-hidden hover:border-brand-orange/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(237,137,54,0.15)] hover:-translate-y-2">
+                    <div class="relative aspect-video bg-black">
+                        <video controls class="w-full h-full object-cover rounded-t-3xl">
+                            <source src="video6.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="p-5 flex items-start gap-4">
+                        <span class="flex-shrink-0 w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-orange font-bold text-xl group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">06</span>
+                        <div>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand-orange transition-colors duration-300">طريقة التسجيل</h3>
+                            <p class="text-sm text-slate-400 mt-1">خطوات حجز مقعدك معنا.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contract (Clean UI) -->
+<!-- Contract Section (Protected View) -->
+    <section id="contract" class="py-20 px-6 bg-slate-50">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-brand-blue mb-2">عقد تنظيم الرحلة</h2>
+                <p class="text-red-500 font-bold text-sm bg-red-50 inline-block px-4 py-1 rounded-full border border-red-100">
+                    ⚠️ نسخة للاطلاع فقط - يمنع نسخها أو تحميلها
+                </p>
+            </div>
+
+            <!-- The Document Viewer Container -->
+            <div class="bg-slate-200 rounded-3xl p-4 shadow-inner border border-slate-300">
+                
+                <!-- Scrollable Area -->
+                <div class="h-[600px] overflow-y-auto rounded-xl bg-slate-500 p-1 space-y-2 pr-2 custom-scrollbar" oncontextmenu="return false;">
+                    
+                    <!-- PAGE 1 -->
+                    <img src="page1.jpg" alt="Contract Page 1" loading="lazy" class="w-full h-auto shadow-lg select-none pointer-events-none" draggable="false">
+                    
+                    <!-- PAGE 2 -->
+                    <img src="page2.jpg" alt="Contract Page 2" loading="lazy" class="w-full h-auto shadow-lg select-none pointer-events-none" draggable="false">
+
+                    <!-- PAGE 3 -->
+                    <img src="page3.jpg" alt="Contract Page 3" loading="lazy" class="w-full h-auto shadow-lg select-none pointer-events-none" draggable="false">
+
+                    <!-- PAGE 4 -->
+                    <img src="page4.jpg" alt="Contract Page 4" loading="lazy" class="w-full h-auto shadow-lg select-none pointer-events-none" draggable="false">
+
+                    <!-- PAGE 5 -->
+                    <img src="page5.jpg" alt="Contract Page 5" loading="lazy" class="w-full h-auto shadow-lg select-none pointer-events-none" draggable="false">
+
+                    <!-- PAGE 6 -->
+                    <img src="page6.jpg" alt="Contract Page 6" loading="lazy" class="w-full h-auto shadow-lg select-none pointer-events-none" draggable="false">
+
+                    <!-- PAGE 7 -->
+                    <img src="page7.jpg" alt="Contract Page 7" loading="lazy" class="w-full h-auto shadow-lg select-none pointer-events-none" draggable="false">
+
+                    <!-- PAGE 8 -->
+                    <img src="page8.jpg" alt="Contract Page 8" loading="lazy" class="w-full h-auto shadow-lg select-none pointer-events-none" draggable="false">
+
+                </div>
+            </div>
+            
+            <p class="text-center text-slate-400 mt-6 text-sm">
+                يتم توقيع النسخة الأصلية والمصادقة عليها في مقر الوكالة عند الحجز النهائي.
+            </p>
+        </div>
+    </section>
+
+    <!-- Booking Section (CTA) -->
+    <section id="booking" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-brand-blue z-0"></div>
+        <!-- Decorative Circles -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-lightBlue rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-float"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-brand-orange rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" style="animation-delay: 2s"></div>
+
+        <div class="relative z-10 container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-12">
+            
+            <div class="md:w-1/2 text-white">
+                <h2 class="text-5xl font-black mb-6">جاهز للانطلاق؟</h2>
+                <p class="text-xl text-blue-100 mb-8">
+                    املأ الاستمارة الآن لحجز مكانك مبدئياً. الأماكن محدودة جداً وتخفيض 50.000 دج ينتهي قريباً.
+                </p>
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center gap-4 bg-white/10 p-4 rounded-xl border border-white/10 backdrop-blur-sm">
+                        <div class="bg-green-500 p-2 rounded-full"><i class="ph-fill ph-phone-call text-white"></i></div>
+                        <div>
+                            <p class="text-sm opacity-70">خط مباشر</p>
+                            <p class="text-xl font-bold font-mono">0795-89-32-95</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:w-1/2 w-full">
+                <!-- FORM -->
+                <form id="bookingForm" class="bg-white rounded-3xl p-8 shadow-2xl">
+                    <div class="mb-6">
+                        <label class="block text-slate-700 font-bold mb-2">الاسم الكامل</label>
+                        <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none transition" placeholder="الاسم واللقب">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-slate-700 font-bold mb-2">رقم الهاتف (Whatsapp)</label>
+                        <input type="tel" name="phone" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none transition text-left dir-ltr" placeholder="0550 00 00 00">
+                    </div>
+                    <div class="mb-8">
+                        <label class="block text-slate-700 font-bold mb-2">الباقة المختارة</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="hotel" value="3_star" class="peer sr-only">
+                                <div class="p-3 text-center border-2 rounded-xl peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange transition">
+                                    3 نجوم
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="hotel" value="4_star" class="peer sr-only" checked>
+                                <div class="p-3 text-center border-2 rounded-xl peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange transition">
+                                    4 نجوم
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="hotel" value="5_star" class="peer sr-only">
+                                <div class="p-3 text-center border-2 rounded-xl peer-checked:border-brand-orange peer-checked:bg-orange-50 peer-checked:text-brand-orange transition">
+                                    5 نجوم
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" id="submitBtn" class="w-full py-4 bg-brand-blue text-white font-bold rounded-xl shadow-lg hover:bg-blue-900 transition flex justify-center items-center gap-2">
+                        <span>تأكيد الحجز</span>
+                        <i class="ph-bold ph-paper-plane-right"></i>
+                    </button>
+                    <p id="formStatus" class="text-center mt-4 text-green-600 font-bold hidden">تم إرسال طلبك بنجاح! سنتصل بك قريباً.</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+<!-- Modern Footer -->
+    <footer class="bg-slate-950 text-slate-400 pt-20 pb-10 border-t border-slate-900 font-sans relative overflow-hidden">
+        
+        <!-- Background Glow -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-brand-orange to-transparent opacity-50"></div>
+
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <!-- Col 1: Brand Info -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-white p-1 flex items-center justify-center overflow-hidden">
+                            <img src="logo.jpg" alt="Logo" class="w-full h-full object-contain">
+                        </div>
+                        <div>
+                            <h3 class="text-white font-bold text-xl leading-none">Day To Day</h3>
+                            <span class="text-brand-orange text-xs font-bold tracking-[0.2em] uppercase">Voyage</span>
+                        </div>
+                    </div>
+                    <p class="text-sm leading-relaxed text-slate-500">
+                        بوابتك الآمنة نحو عالم الاستيراد والتجارة في الصين. رحلات منظمة، تدريب احترافي، ومرافقة شاملة لرواد الأعمال.
+                    </p>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold text-lg mb-6 border-r-4 border-brand-orange pr-3">روابط سريعة</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#program" class="hover:text-brand-orange transition-colors duration-300 flex items-center gap-2"><i class="ph-bold ph-caret-left text-xs"></i> برنامج الرحلة</a></li>
+                        <li><a href="#pricing" class="hover:text-brand-orange transition-colors duration-300 flex items-center gap-2"><i class="ph-bold ph-caret-left text-xs"></i> باقات الأسعار</a></li>
+                        <li><a href="#videos" class="hover:text-brand-orange transition-colors duration-300 flex items-center gap-2"><i class="ph-bold ph-caret-left text-xs"></i> شروحات الفيديو</a></li>
+                        <li><a href="#contract" class="hover:text-brand-orange transition-colors duration-300 flex items-center gap-2"><i class="ph-bold ph-caret-left text-xs"></i> العقد</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Contact Info -->
+                <div>
+                    <h4 class="text-white font-bold text-lg mb-6 border-r-4 border-brand-orange pr-3">اتصل بنا</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-map-pin text-brand-orange text-xl mt-1"></i>
+                            <span>إقامة الأميرة إيلاف بلقايد، <br>بئر الجير، وهران، الجزائر</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="ph-fill ph-phone text-brand-orange text-xl"></i>
+                            <div class="flex flex-col dir-ltr text-right">
+                                <a href="tel:0795893295" class="hover:text-white transition">0795-89-32-95</a>
+                                <a href="tel:0796299361" class="hover:text-white transition">0796-29-93-61</a>
+                            </div>
+                        </li>
+                        <li class="pt-2">
+                            <a href="https://maps.app.goo.gl/ofk2VFajZLUCWPwA8" target="_blank" class="inline-flex items-center gap-2 border border-slate-700 hover:border-brand-orange hover:bg-brand-orange hover:text-white px-4 py-2 rounded-lg transition-all text-sm">
+                                <i class="ph-bold ph-arrow-square-out"></i>
+                                الموقع على الخريطة
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Social Media -->
+                <div>
+                    <h4 class="text-white font-bold text-lg mb-6 border-r-4 border-brand-orange pr-3">تابعنا على</h4>
+                    <p class="text-sm text-slate-500 mb-4">كن أول من يعرف عن عروضنا القادمة:</p>
+                    <div class="flex gap-3">
+                        <!-- Facebook -->
+                        <a href="https://www.facebook.com/daytodayvoyage/?locale=fr_FR" target="_blank" class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center border border-slate-800 hover:border-blue-600 hover:bg-blue-600 hover:text-white text-slate-400 transition-all duration-300 hover:-translate-y-1 shadow-lg group">
+                            <i class="ph-fill ph-facebook-logo text-2xl"></i>
+                        </a>
+                        
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/day_to_day_voyage1/" target="_blank" class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center border border-slate-800 hover:border-pink-600 hover:bg-gradient-to-tr hover:from-purple-600 hover:to-pink-500 hover:text-white text-slate-400 transition-all duration-300 hover:-translate-y-1 shadow-lg group">
+                            <i class="ph-fill ph-instagram-logo text-2xl"></i>
+                        </a>
+
+                        <!-- TikTok -->
+                        <a href="https://www.tiktok.com/@daytodayvoyage" target="_blank" class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center border border-slate-800 hover:border-black hover:bg-black hover:text-white text-slate-400 transition-all duration-300 hover:-translate-y-1 shadow-lg group">
+                            <i class="ph-fill ph-tiktok-logo text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-600">
+                <p>&copy; 2026 Day To Day Voyage. جميع الحقوق محفوظة.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-white transition">سياسة الخصوصية</a>
+                    <a href="#" class="hover:text-white transition">شروط الاستخدام</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Logic -->
+    <script>
+        // 1. Hotel Selection Logic (Updates radio buttons when clicking pricing cards)
+        function selectHotel(value) {
+            const radios = document.getElementsByName('hotel');
+            for(let radio of radios) {
+                if(radio.value === value) radio.checked = true;
+            }
+        }
+
+        // 2. Google Sheet Form Submission (AJAX - No Backend)
+        const form = document.getElementById('bookingForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('formStatus');
+
+        // REPLACE THIS URL with your Google Apps Script URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyE03cv3XsVtR8RXAg9cjLuuNAZyfUvmTztYver026a7BAU1PbASZ_3QGCBvLZw_98BvA/exec';
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // UI Loading State
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="ph ph-spinner animate-spin text-xl"></i> جاري الإرسال...';
+            
+            let requestBody = new FormData(form);
+            
+            fetch(SCRIPT_URL, { method: 'POST', body: requestBody})
+            .then(response => {
+                submitBtn.innerHTML = '<i class="ph-bold ph-check"></i> تم الإرسال';
+                submitBtn.classList.replace('bg-brand-blue', 'bg-green-600');
+                statusMsg.classList.remove('hidden');
+                form.reset();
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span>تأكيد الحجز</span><i class="ph-bold ph-paper-plane-right"></i>';
+                    submitBtn.classList.replace('bg-green-600', 'bg-brand-blue');
+                }, 3000);
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'حدث خطأ، حاول مرة أخرى';
+            });
+        });
+    </script>
+</body>
+</html>
