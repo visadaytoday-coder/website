@@ -10,10 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Add VPS to known_hosts
+      - name: Debug SSH from runner
         run: |
           mkdir -p ~/.ssh
+          printf "%s" "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p 22 ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "whoami"
 
       - name: Rsync deploy (mirror)
         uses: burnett01/rsync-deployments@7.1.0
