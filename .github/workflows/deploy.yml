@@ -26,11 +26,11 @@ jobs:
         run: |
           rsync -avzr --delete -e "ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes" ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/website/html/
 
-      - name: Reload nginx container
+       - name: Reload nginx container
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
           port: 22
+          key_path: /home/runner/.ssh/id_ed25519
           script: docker exec landing nginx -s reload
