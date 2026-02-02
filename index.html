@@ -123,6 +123,25 @@
             z-index: 1;
         }
     </style>
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '662671783056902');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=662671783056902&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 
 <body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
@@ -200,11 +219,11 @@
             <!-- Stats/Countdown -->
             <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
                 <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
-                    <div class="text-brand-gold font-bold text-2xl">12</div>
+                    <div class="text-brand-gold font-bold text-2xl">11</div>
                     <div class="text-slate-300 text-sm">يوم في الصين</div>
                 </div>
                 <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
-                    <div class="text-brand-gold font-bold text-2xl">+5</div>
+                    <div class="text-brand-gold font-bold text-2xl">19</div>
                     <div class="text-slate-300 text-sm">قطاعات تجارية</div>
                 </div>
                 <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
@@ -268,7 +287,7 @@
                     class="bg-white rounded-[2rem] shadow-xl p-8 border border-slate-100 flex flex-col justify-center relative group">
                     <i class="ph ph-translate text-5xl mb-4 text-brand-orange"></i>
                     <h3 class="text-2xl font-bold text-brand-blue mb-2">مرافقة و ترجمة</h3>
-                    <p class="text-slate-600">مرشدون سياحيون ومترجمون معك في المعرض والفندق.</p>
+                    <p class="text-slate-600">مرشدون سياحيون ومترجمون معك حسب الطلب.</p>
                 </div>
             </div>
         </div>
@@ -800,7 +819,7 @@
             <div class="md:w-1/2 text-white">
                 <h2 class="text-5xl font-black mb-6">جاهز للانطلاق؟</h2>
                 <p class="text-xl text-blue-100 mb-8">
-                    املأ الاستمارة الآن لحجز مكانك مبدئياً. الأماكن محدودة جداً وتخفيض 50.000 دج ينتهي قريباً.
+                    املأ الاستمارة الآن لحجز مكانك مبدئياً. الأماكن محدودة جداً وتخفيض 30.000 دج ينتهي قريباً.
                 </p>
                 <div class="flex flex-col gap-4">
                     <div
@@ -819,6 +838,15 @@
                         <div>
                             <p class="text-sm opacity-70">خط مباشر 2</p>
                             <p class="text-xl font-bold font-mono">0796-29-93-61</p>
+                        </div>
+                    </div>
+                    <div
+                        class="flex items-center gap-4 bg-white/10 p-4 rounded-xl border border-white/10 backdrop-blur-sm">
+                        <div class="bg-green-500 p-2 rounded-full"><i class="ph-fill ph-phone-call text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm opacity-70">خط مباشر 3</p>
+                            <p class="text-xl font-bold font-mono">0699-52-32-64</p>
                         </div>
                     </div>
                 </div>
@@ -1015,6 +1043,32 @@
 
         // 2. Form Submission (HubSpot + Google Sheet Backup)
         const form = document.getElementById('bookingForm');
+        const phoneInput = form.querySelector('input[name="phone"]');
+
+        function normalizeDZPhone(raw) {
+            let clean = raw.trim();
+            let hasPlus = clean.startsWith('+');
+            clean = clean.replace(/[^0-9]/g, '');
+            if (hasPlus) clean = '+' + clean;
+
+            if (clean.startsWith('00')) {
+                return '+' + clean.substring(2);
+            }
+            if (clean.startsWith('+213')) {
+                return clean;
+            }
+            if (clean.startsWith('213')) {
+                return '+' + clean;
+            }
+            if (clean.startsWith('0')) {
+                return '+213' + clean.substring(1);
+            }
+            return '+213' + clean.replace(/^\+/, '');
+        }
+
+        if (phoneInput) {
+            // No blur listener
+        }
         const submitBtn = document.getElementById('submitBtn');
         const statusMsg = document.getElementById('formStatus');
 
@@ -1035,6 +1089,11 @@
 
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
+
+            // Normalize Phone
+            const normalizedPhone = normalizeDZPhone(data.phone);
+            data.phone = normalizedPhone;
+            formData.set('phone', normalizedPhone);
 
             // Prepare HubSpot Payload
             const hsPayload = {
@@ -1064,6 +1123,11 @@
                         // However, we need to ensure the Google Script accepts these fields. 
                         // Since we removed 'hotel', it might send undefined. That is consistent with "Sheet backup failed" log if it fails.
                         fetch(SCRIPT_URL, { method: 'POST', body: formData }).catch(err => console.log('Sheet backup failed', err));
+
+                        // Fire Meta Lead Event
+                        if (typeof fbq === 'function') {
+                            fbq('track', 'Lead');
+                        }
 
                         submitBtn.innerHTML = '<i class="ph-bold ph-check"></i> تم الإرسال';
                         submitBtn.classList.replace('bg-brand-blue', 'bg-green-600');
